@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.DoctorMapper">
+
+    <sql id="Base_Column_List">
+        id,username,password,name,phone,email,avatar,role,description,price,time,position,department_id
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Doctor">
+        select
+        d.id, d.username, d.password, d.name, d.phone, d.email, d.avatar, d.role, d.description, d.price, d.time, d.position, d.department_id, dp.name as departmentName
+        from doctor d
+        left join department dp on d.department_id = dp.id
+        <where>
+            <if test="id != null"> and d.id= #{id}</if>
+            <if test="username != null"> and d.username like concat('%', #{username}, '%')</if>
+            <if test="password != null"> and d.password= #{password}</if>
+            <if test="name != null"> and d.name= #{name}</if>
+            <if test="phone != null"> and d.phone= #{phone}</if>
+            <if test="email != null"> and d.email= #{email}</if>
+            <if test="avatar != null"> and d.avatar= #{avatar}</if>
+            <if test="role != null"> and d.role= #{role}</if>
+        </where>
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Doctor">
+        select
+        <include refid="Base_Column_List" />
+        from doctor
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from doctor
+        where  id = #{id}
+    </delete>
+
+    <!-- description,price,time,position,department_id -->
+    <insert id="insert" parameterType="com.example.entity.Doctor" useGeneratedKeys="true">
+        insert into doctor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="username != null">username,</if>
+                <if test="password != null">password,</if>
+                <if test="name != null">name,</if>
+                <if test="phone != null">phone,</if>
+                <if test="email != null">email,</if>
+                <if test="avatar != null">avatar,</if>
+                <if test="role != null">role,</if>
+                <if test="description != null">description,</if>
+                <if test="price != null">price,</if>
+                <if test="time != null">time,</if>
+                <if test="position != null">position,</if>
+                <if test="departmentId != null">department_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id},</if>
+                <if test="username != null">#{username},</if>
+                <if test="password != null">#{password},</if>
+                <if test="name != null">#{name},</if>
+                <if test="phone != null">#{phone},</if>
+                <if test="email != null">#{email},</if>
+                <if test="avatar != null">#{avatar},</if>
+                <if test="role != null">#{role},</if>
+            <if test="description != null">#{description},</if>
+            <if test="price != null">#{price},</if>
+            <if test="time != null">#{time},</if>
+            <if test="position != null">#{position},</if>
+            <if test="departmentId != null">#{departmentId}</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Doctor">
+        update doctor
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="role != null">
+                role = #{role},
+            </if>
+
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="position != null">
+                position = #{position},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId}
+            </if>
+
+
+
+        </set>
+        where id = #{id} 
+    </update>
+
+</mapper>
