@@ -3,7 +3,7 @@ package com.example.entity;
 import java.io.Serializable;
 
 /**
- * 患者
+ * 患者/用戶
 */
 public class User extends Account implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -24,7 +24,17 @@ public class User extends Account implements Serializable {
     private String avatar;
     /** 角色标识 */
     private String role;
-    private Double account;
+
+    private Double balance;
+
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
 
     @Override
     public Integer getId() {
@@ -100,13 +110,5 @@ public class User extends Account implements Serializable {
     @Override
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public Double getAccount() {
-        return account;
-    }
-
-    public void setAccount(Double account) {
-        this.account = account;
     }
 }

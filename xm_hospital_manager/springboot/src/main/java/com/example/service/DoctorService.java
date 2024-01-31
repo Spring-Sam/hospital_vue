@@ -104,7 +104,7 @@ public class DoctorService {
             throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
         }
         // 生成token
-        String tokenData = dbAdmin.getId() + "-" + RoleEnum.ADMIN.name();
+        String tokenData = dbAdmin.getId() + "-" + RoleEnum.DOCTOR.name();
         String token = TokenUtils.createToken(tokenData, dbAdmin.getPassword());
         dbAdmin.setToken(token);
         return dbAdmin;
