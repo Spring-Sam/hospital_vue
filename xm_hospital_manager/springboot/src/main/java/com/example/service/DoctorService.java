@@ -6,9 +6,11 @@ import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
 import com.example.entity.Admin;
+import com.example.entity.Department;
 import com.example.entity.Doctor;
 import com.example.exception.CustomException;
 import com.example.mapper.AdminMapper;
+import com.example.mapper.DepartmentMapper;
 import com.example.mapper.DoctorMapper;
 import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
@@ -27,6 +29,9 @@ public class DoctorService {
 
     @Resource
     private DoctorMapper doctorMapper;
+
+    @Resource
+    private DepartmentMapper departmentMapper;
 
     /**
      * 新增
@@ -96,7 +101,7 @@ public class DoctorService {
      * 登录
      */
     public Account login(Account account) {
-        Account dbAdmin = doctorMapper.selectByUsername(account.getUsername());
+        Doctor dbAdmin = doctorMapper.selectByUsername(account.getUsername());
         if (ObjectUtil.isNull(dbAdmin)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
@@ -107,6 +112,15 @@ public class DoctorService {
         String tokenData = dbAdmin.getId() + "-" + RoleEnum.DOCTOR.name();
         String token = TokenUtils.createToken(tokenData, dbAdmin.getPassword());
         dbAdmin.setToken(token);
+
+        if(ObjectUtil.isNotEmpty(dbAdmin.getDepartmentId())){
+            Department department = departmentMapper.selectById(dbAdmin.getDepartmentId());
+            if(ObjectUtil.isNotEmpty(department)){
+                dbAdmin.setDepartmentName(department.getName());
+            }
+        }
+
+
         return dbAdmin;
     }
 
