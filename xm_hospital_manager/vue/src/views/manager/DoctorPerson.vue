@@ -19,6 +19,22 @@
         <el-form-item label="姓名" prop="name">
           <el-input v-model="user.name" placeholder="姓名"></el-input>
         </el-form-item>
+        <el-form-item label="介紹" prop="description">
+          <el-input type="textarea" v-model="user.description" placeholder="介紹"></el-input>
+        </el-form-item>
+        <el-form-item label="科室" prop="departmentName">
+          <el-input  v-model="user.departmentName" placeholder="科室" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="掛號費" prop="price">
+          <el-input  v-model="user.price" placeholder="掛號費" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="入職時間" prop="time">
+          <el-input  v-model="user.time" placeholder="入職時間" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="職位" prop="position">
+          <el-input  v-model="user.position" placeholder="職位" disabled></el-input>
+        </el-form-item>
+
         <el-form-item label="电话" prop="phone">
           <el-input v-model="user.phone" placeholder="电话"></el-input>
         </el-form-item>
