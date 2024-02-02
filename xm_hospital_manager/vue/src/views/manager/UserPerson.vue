@@ -26,13 +26,30 @@
           <el-input v-model="user.email" placeholder="邮箱"></el-input>
         </el-form-item>
         <el-form-item label="餘額" prop="balance">
-          <el-input v-model="user.balance" placeholder="餘額" disabled="true"></el-input>
+          <el-input v-model="user.balance" placeholder="餘額" disabled></el-input>
         </el-form-item>
         <div style="text-align: center; margin-bottom: 20px">
           <el-button type="primary" @click="update">保 存</el-button>
+          <el-button type="warning" @click="recharge">充 值</el-button>
         </div>
       </el-form>
     </el-card>
+
+    <el-dialog title="充值金額" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
+      <el-form label-width="100px" style="padding-right: 50px" :model="user"  ref="formRef">
+        <el-form-item prop="balance" label="輸入金額">
+          <el-input v-model="balance" autocomplete="off"></el-input>
+        </el-form-item>
+        
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="fromVisible = false">取 消</el-button>
+        <el-button type="primary" @click="save">确 定</el-button>
+      </div>
+    </el-dialog>
+
+
+
   </div>
 </template>
 
@@ -41,17 +58,34 @@ export default {
   name: "UserPerson",
   data() {
     return {
-      user: JSON.parse(localStorage.getItem('xm-user') || '{}')
+      user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
+      fromVisible: false,
+      balance: null
+    
     }
   },
   created() {
 
   },
   methods: {
+    recharge(){
+      this.balance=100
+      this.fromVisible=true
+
+    },
+    save(){
+      if(!this.balance){
+        this.$message.warning('請輸入充值金額')
+        return
+      }
+      this.user.balance = parseFloat(this.user.balance) + parseFloat(this.balance)
+      this.update();
+    },
     update() {
       // 保存当前的用户信息到数据库
       this.$request.put('/user/update', this.user).then(res => {
         if (res.code === '200') {
+          this.fromVisible = false
           // 成功更新
           this.$message.success('保存成功')
 
