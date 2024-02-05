@@ -10,11 +10,14 @@
 
     <select id="selectAll" resultType="com.example.entity.Plan">
         select
-        <include refid="Base_Column_List" />
+            plan.*, doctor.name as doctorName, d.name as departmentName
         from plan
+        left join doctor on plan.doctor_id = doctor.id
+        left join department d on doctor.department_id = d.id
+
         <where>
             <if test="id != null"> and id= #{id}</if>
-            <if test="week != null"> and title = #{week}</if>
+            <if test="week != null"> and week = #{week}</if>
 
         </where>
         order by id desc
@@ -58,7 +61,7 @@
                 num = #{num},
             </if>
             <if test="week != null">
-                time = #{week},
+                week = #{week}
             </if>
         </set>
         where id = #{id} 

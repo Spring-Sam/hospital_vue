@@ -84,4 +84,12 @@ public class DoctorController {
         return Result.success(page);
     }
 
+    @GetMapping("/selectPageCard")
+    public Result selectPageCard(Doctor Doctor,
+                             @RequestParam(defaultValue = "1") Integer pageNum,
+                             @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<Doctor> page = doctorService.selectPageCard(Doctor, pageNum, pageSize);
+        return Result.success(page);
+    }
+
 }

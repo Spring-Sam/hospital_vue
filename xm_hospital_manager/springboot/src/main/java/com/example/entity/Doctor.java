@@ -38,6 +38,16 @@ public class Doctor extends Account implements Serializable {
 
     private String departmentName;
 
+    private String week;
+
+
+    public String getWeek() {
+        return week;
+    }
+
+    public void setWeek(String week) {
+        this.week = week;
+    }
 
     public String getDescription() {
         return description;

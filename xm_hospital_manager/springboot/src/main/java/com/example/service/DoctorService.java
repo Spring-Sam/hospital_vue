@@ -15,11 +15,16 @@ import com.example.mapper.DoctorMapper;
 import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 管理员业务处理
@@ -147,5 +152,26 @@ public class DoctorService {
             dbAdmin.setPassword(account.getNewPassword());
             doctorMapper.updateById(dbAdmin);
         }
+
+    public PageInfo<Doctor> selectPageCard(Doctor doctor, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        String week = getTodayWeek();
+        doctor.setWeek(week);
+        List<Doctor> list = doctorMapper.selectAll(doctor);
+        return PageInfo.of(list);
+    }
+
+    /**
+     * 獲取今天是星期幾
+     * @return
+     */
+    private String getTodayWeek(){
+        LocalDate today = LocalDate.now();
+        DayOfWeek dayOfWeek = today.getDayOfWeek();
+        return dayOfWeek.getDisplayName(TextStyle.FULL_STANDALONE, Locale.CHINA);
+
+    }
+
+
 
 }

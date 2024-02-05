@@ -24,6 +24,7 @@ public class PlanController {
      */
     @PostMapping("/add")
     public Result add(@RequestBody Plan plan) {
+
         planService.add(plan);
         return Result.success();
     }

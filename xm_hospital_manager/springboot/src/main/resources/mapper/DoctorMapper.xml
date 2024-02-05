@@ -13,6 +13,7 @@
         d.id, d.username, d.password, d.name, d.phone, d.email, d.avatar, d.role, d.description, d.price, d.time, d.position, d.department_id, dp.name as departmentName
         from doctor d
         left join department dp on d.department_id = dp.id
+        left join plan on d.id = plan.doctor_id
         <where>
             <if test="id != null"> and d.id= #{id}</if>
             <if test="username != null"> and d.username like concat('%', #{username}, '%')</if>
@@ -22,6 +23,8 @@
             <if test="email != null"> and d.email= #{email}</if>
             <if test="avatar != null"> and d.avatar= #{avatar}</if>
             <if test="role != null"> and d.role= #{role}</if>
+            <if test="departmentId != null"> and d.department_id= #{departmentId}</if>
+            <if test="week != null"> and plan.week= #{week}</if>
         </where>
     </select>
 

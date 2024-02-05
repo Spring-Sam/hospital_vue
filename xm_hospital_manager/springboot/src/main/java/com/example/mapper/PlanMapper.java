@@ -1,6 +1,8 @@
 package com.example.mapper;
 
 import com.example.entity.Plan;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -34,4 +36,6 @@ public interface PlanMapper {
     */
     List<Plan> selectAll(Plan notice);
 
+    @Select("select * from plan where doctor_id = #{doctorId} and week = #{week}" )
+    Plan selectDoctorIdAndWeek(@Param("doctorId") Integer doctorId, @Param("week") String week);
 }

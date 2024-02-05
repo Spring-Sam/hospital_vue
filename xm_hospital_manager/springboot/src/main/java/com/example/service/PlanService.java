@@ -1,8 +1,11 @@
 package com.example.service;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.example.common.enums.ResultCodeEnum;
 import com.example.entity.Account;
 import com.example.entity.Plan;
+import com.example.exception.CustomException;
 import com.example.mapper.PlanMapper;
 import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
@@ -25,7 +28,11 @@ public class PlanService {
      * 新增
      */
     public void add(Plan plan) {
-        //Account currentUser = TokenUtils.getCurrentUser();
+        Plan dbPlan = planMapper.selectDoctorIdAndWeek(plan.getDoctorId(),plan.getWeek());
+        if(ObjectUtil.isNotEmpty(dbPlan)){
+            throw new CustomException(ResultCodeEnum.PLAN_EXIST_ERROR);
+        }
+
         planMapper.insert(plan);
     }
 
