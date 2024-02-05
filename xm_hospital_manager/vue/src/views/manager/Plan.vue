@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search">
-      <el-input placeholder="请输入标题查询" style="width: 200px" v-model="title"></el-input>
+      <el-input placeholder="请输入怕排班日查询" style="width: 200px" v-model="week"></el-input>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
@@ -49,14 +49,27 @@
             <el-option
                 v-for="item in doctorData"
                 :key="item.id"
-                :label="item.name"
+                :label="item.name + ' - ' + item.departmentName"
                 :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item prop="content" label="内容">
-          <el-input type="textarea" :rows="5" v-model="form.content" autocomplete="off"></el-input>
+        <el-form-item prop="num" label="看病人數">
+          <el-input  v-model="form.num"  placeholder="看病人數"  ></el-input>
         </el-form-item>
+        <el-form-item prop="week" label="工作日">
+          <el-select v-model="form.week" placeholder="選擇醫生" style="width: 100%">
+              <el-option label="星期一"  value="星期一"></el-option>
+              <el-option label="星期二"  value="星期二"></el-option>
+              <el-option label="星期三"  value="星期三"></el-option>
+              <el-option label="星期四"  value="星期四"></el-option>
+              <el-option label="星期五"  value="星期五"></el-option>
+              <el-option label="星期六"  value="星期六"></el-option>
+              <el-option label="星期日"  value="星期日"></el-option>
+          </el-select>
+        </el-form-item>
+
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="fromVisible = false">取 消</el-button>
@@ -77,7 +90,7 @@ export default {
       pageNum: 1,   // 当前的页码
       pageSize: 10,  // 每页显示的个数
       total: 0,
-      title: null,
+      week: null,
       fromVisible: false,
       form: {},
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
@@ -100,10 +113,11 @@ export default {
   methods: {
     loadDoctor() {
       this.$request.get('/doctor/selectAll').then(res => {
-          if(this.code === '200' ) {
+        console.log(res)
+          if(res.code === '200' ) {
             this.doctorData = res.data
           }else{
-            this.$message.error(res)
+            this.$message.error(res.msg)
           }
 
       })
@@ -174,7 +188,7 @@ export default {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          title: this.title,
+          week: this.week,
         }
       }).then(res => {
         this.tableData = res.data?.list

@@ -202,7 +202,7 @@ export default {
     },
     load(pageNum) {  // 分页查询
       if (pageNum) this.pageNum = pageNum
-      this.$request.get('/doctor/selectPage', {
+      this.$request.get('/doctor/selectPageCard', {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
